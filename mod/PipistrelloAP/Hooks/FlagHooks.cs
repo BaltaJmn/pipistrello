@@ -13,18 +13,11 @@ public static class SetFlagPatch
     {
         var flag = __1 ?? "";
 
-        // AP-relevant flags only
-        if (flag.StartsWith("g:equip:") && flag.EndsWith(":acquired"))
-            Plugin.Log.LogInfo($"[AP] EQUIP ACQUIRED: {flag}");
-        else if (flag.StartsWith("g:upgrade:") && flag.EndsWith(":acquired"))
-            Plugin.Log.LogInfo($"[AP] UPGRADE ACQUIRED: {flag}");
-        else if (flag.StartsWith("g:petalContainer:") && flag.EndsWith(":acquired"))
-            Plugin.Log.LogInfo($"[AP] PETAL ACQUIRED: {flag}");
-        else if (flag.StartsWith("g:tunnels:gotBattery"))
-            Plugin.Log.LogInfo($"[AP] BATTERY: {flag}");
-        else if (flag.EndsWith("Complete"))
-            Plugin.Log.LogInfo($"[AP] AREA COMPLETE: {flag}");
-        else if (flag.StartsWith("g:ability:"))
+        LocationManager.OnFlagSet(flag);
+
+        // Abilities are AP items (received from AP, not sent as checks) — log separately
+        // TODO Phase 2: route to ItemManager.OnAbilityGranted(flag) instead
+        if (flag.StartsWith("g:ability:"))
             Plugin.Log.LogInfo($"[AP] ABILITY: {flag}");
     }
 }
