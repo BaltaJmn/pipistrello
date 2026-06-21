@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# .NET / C#
+bin/
+obj/
+*.user
+.vs/
+*.suo
+*.csproj.user
+
+# BepInEx output
+mod/PipistrelloAP/bin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Generated files (rebuilt from shared/data/)
+mod/PipistrelloAP/Data/generated/
+tracker/generated/

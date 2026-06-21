@@ -1,0 +1,54 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-data:
+    name: Validate shared data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install jsonschema
+
+      - name: Run validator
+        run: python shared/scripts/validate.py
+
+  test-world:
+    name: APWorld tests
+    runs-on: ubuntu-latest
+    needs: validate-data
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ArchipelagoMW/Archipelago
+          path: archipelago
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Archipelago dependencies
+        run: |
+          cd archipelago
+          pip install -r requirements.txt
+
+      - name: Copy world into Archipelago
+        run: cp -r world/pipistrello archipelago/worlds/pipistrello
+
+      - name: Run APWorld tests
+        run: |
+          cd archipelago
+          python -m pytest worlds/pipistrello/tests/ -v

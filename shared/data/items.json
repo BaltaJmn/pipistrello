@@ -1,0 +1,71 @@
+{
+  "$schema": "../../shared/schemas/item.schema.json",
+  "items": [
+    {
+      "id": 7370000,
+      "name": "Yoyo",
+      "classification": "progression",
+      "category": "weapon",
+      "count": 1,
+      "description": "The cursed yoyo. Primary weapon and tool.",
+      "tracker_image": "images/items/yoyo.png",
+      "mod_internal_name": "PLACEHOLDER_Yoyo",
+      "tags": ["weapon", "main"]
+    },
+    {
+      "id": 7370001,
+      "name": "Double Jump",
+      "classification": "progression",
+      "category": "movement",
+      "count": 1,
+      "description": "Allows a second jump in mid-air.",
+      "tracker_image": "images/items/double_jump.png",
+      "mod_internal_name": "PLACEHOLDER_DoubleJump",
+      "tags": ["movement", "ability"]
+    },
+    {
+      "id": 7370002,
+      "name": "Dash",
+      "classification": "progression",
+      "category": "movement",
+      "count": 1,
+      "description": "Quick horizontal dash through obstacles.",
+      "tracker_image": "images/items/dash.png",
+      "mod_internal_name": "PLACEHOLDER_Dash",
+      "tags": ["movement", "ability"]
+    },
+    {
+      "id": 7370100,
+      "name": "Health Upgrade",
+      "classification": "useful",
+      "category": "upgrade",
+      "count": 4,
+      "description": "Increases maximum health by one.",
+      "tracker_image": "images/items/health_upgrade.png",
+      "mod_internal_name": "PLACEHOLDER_HealthUpgrade",
+      "tags": ["upgrade", "health"]
+    },
+    {
+      "id": 7370300,
+      "name": "Gold Coin",
+      "classification": "filler",
+      "category": "currency",
+      "count": 20,
+      "description": "A handful of gold coins.",
+      "tracker_image": "images/items/coin.png",
+      "mod_internal_name": "PLACEHOLDER_Coin",
+      "tags": ["currency", "filler"]
+    },
+    {
+      "id": 7370500,
+      "name": "Bat Trap",
+      "classification": "trap",
+      "category": "trap",
+      "count": 5,
+      "description": "Releases a swarm of bats.",
+      "tracker_image": "images/items/bat_trap.png",
+      "mod_internal_name": "PLACEHOLDER_BatTrap",
+      "tags": ["trap"]
+    }
+  ]
+}

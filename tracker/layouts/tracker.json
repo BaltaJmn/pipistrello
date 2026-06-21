@@ -1,0 +1,38 @@
+{
+  "type": "layout",
+  "content": {
+    "type": "array",
+    "style": "vertical",
+    "content": [
+      {
+        "type": "group",
+        "title": "Key Items",
+        "content": {
+          "type": "array",
+          "style": "horizontal",
+          "content": [
+            { "type": "item", "item": "yoyo",        "h_alignment": "center" },
+            { "type": "item", "item": "double_jump",  "h_alignment": "center" },
+            { "type": "item", "item": "dash",         "h_alignment": "center" }
+          ]
+        }
+      },
+      {
+        "type": "group",
+        "title": "Upgrades",
+        "content": {
+          "type": "array",
+          "style": "horizontal",
+          "content": [
+            { "type": "item", "item": "health_upgrade", "h_alignment": "center" }
+          ]
+        }
+      },
+      {
+        "type": "map",
+        "maps": ["world_map"],
+        "h_alignment": "stretch"
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Starting Area",
+    "children": [
+      {
+        "name": "Tutorial Chest",
+        "sections": [
+          {
+            "name": "Tutorial Chest",
+            "hosted_item": "@Starting Area - Tutorial Chest",
+            "access_rules": [[]],
+            "map_locations": [
+              { "map": "world_map", "x": 100, "y": 100 }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cursed Forest",
+    "children": [
+      {
+        "name": "Chest 1",
+        "sections": [
+          {
+            "name": "Chest 1",
+            "hosted_item": "@Cursed Forest - Chest 1",
+            "access_rules": [["yoyo"]],
+            "map_locations": [
+              { "map": "world_map", "x": 245, "y": 310 }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Boss Reward",
+        "sections": [
+          {
+            "name": "Forest Guardian",
+            "hosted_item": "@Cursed Forest - Boss Reward",
+            "access_rules": [["yoyo"]],
+            "map_locations": [
+              { "map": "world_map", "x": 280, "y": 295 }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

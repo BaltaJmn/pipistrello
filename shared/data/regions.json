@@ -1,0 +1,36 @@
+{
+  "regions": [
+    {
+      "id": "menu",
+      "name": "Menu",
+      "connects_to": [
+        { "target": "starting_area", "rules": [] }
+      ]
+    },
+    {
+      "id": "starting_area",
+      "name": "Starting Area",
+      "connects_to": [
+        { "target": "cursed_forest", "rules": ["has_yoyo"] },
+        { "target": "town",          "rules": [] }
+      ]
+    },
+    {
+      "id": "town",
+      "name": "Town",
+      "connects_to": []
+    },
+    {
+      "id": "cursed_forest",
+      "name": "Cursed Forest",
+      "connects_to": [
+        { "target": "deep_forest", "rules": ["has_double_jump"] }
+      ]
+    },
+    {
+      "id": "deep_forest",
+      "name": "Deep Forest",
+      "connects_to": []
+    }
+  ]
+}

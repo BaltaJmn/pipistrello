@@ -1,0 +1,47 @@
+{
+  "$schema": "../../shared/schemas/location.schema.json",
+  "locations": [
+    {
+      "id": 7371000,
+      "name": "Starting Area - Tutorial Chest",
+      "region": "starting_area",
+      "type": "chest",
+      "access_rules": [],
+      "map_coordinates": { "x": 100, "y": 100 },
+      "map_file": "world_map",
+      "tracker_section": "Starting Area",
+      "mod_scene": "PLACEHOLDER_StartScene",
+      "mod_object_path": "PLACEHOLDER_Chest_Tutorial",
+      "mod_flag": "PLACEHOLDER_chest_tutorial_collected",
+      "hints": ["The very first chest"]
+    },
+    {
+      "id": 7371001,
+      "name": "Cursed Forest - Chest 1",
+      "region": "cursed_forest",
+      "type": "chest",
+      "access_rules": ["has_yoyo"],
+      "map_coordinates": { "x": 245, "y": 310 },
+      "map_file": "world_map",
+      "tracker_section": "Cursed Forest",
+      "mod_scene": "PLACEHOLDER_ForestScene",
+      "mod_object_path": "PLACEHOLDER_Chest_Forest_01",
+      "mod_flag": "PLACEHOLDER_chest_forest_01_collected",
+      "hints": ["Near the old oak tree"]
+    },
+    {
+      "id": 7371500,
+      "name": "Cursed Forest - Boss Reward",
+      "region": "cursed_forest",
+      "type": "boss",
+      "access_rules": ["has_yoyo"],
+      "map_coordinates": { "x": 280, "y": 295 },
+      "map_file": "world_map",
+      "tracker_section": "Cursed Forest",
+      "mod_scene": "PLACEHOLDER_ForestBossScene",
+      "mod_object_path": "PLACEHOLDER_Boss_ForestGuardian",
+      "mod_flag": "PLACEHOLDER_boss_forest_guardian_defeated",
+      "hints": ["Defeat the Forest Guardian"]
+    }
+  ]
+}

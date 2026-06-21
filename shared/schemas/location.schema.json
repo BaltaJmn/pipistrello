@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "required": ["locations"],
+  "properties": {
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "region", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "id":               { "type": "integer", "minimum": 7371000 },
+          "name":             { "type": "string", "minLength": 1 },
+          "region":           { "type": "string" },
+          "type":             { "type": "string", "enum": ["chest", "boss", "npc", "secret", "event", "ability"] },
+          "access_rules":     { "type": "array", "items": { "type": "string" } },
+          "map_coordinates":  {
+            "type": "object",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" }
+            }
+          },
+          "map_file":         { "type": "string" },
+          "tracker_section":  { "type": "string" },
+          "mod_scene":        { "type": "string" },
+          "mod_object_path":  { "type": "string" },
+          "mod_flag":         { "type": "string" },
+          "hints":            { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

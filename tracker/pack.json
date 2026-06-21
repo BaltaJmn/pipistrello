@@ -1,0 +1,15 @@
+{
+  "name": "Pipistrello and the Cursed Yoyo",
+  "game_name": "Pipistrello and the Cursed Yoyo",
+  "package_uid": "pipistrello-ap",
+  "package_version": "0.1.0",
+  "author": "BaltaJmn",
+  "variants": [
+    {
+      "id": "standard",
+      "display_name": "Standard",
+      "package_path": "",
+      "flags": {}
+    }
+  ]
+}

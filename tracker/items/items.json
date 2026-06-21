@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Yoyo",
+    "type": "toggle",
+    "img": "images/items/yoyo.png",
+    "codes": "yoyo"
+  },
+  {
+    "name": "Double Jump",
+    "type": "toggle",
+    "img": "images/items/double_jump.png",
+    "codes": "double_jump"
+  },
+  {
+    "name": "Dash",
+    "type": "toggle",
+    "img": "images/items/dash.png",
+    "codes": "dash"
+  },
+  {
+    "name": "Health Upgrades",
+    "type": "progressive",
+    "codes": "health_upgrade",
+    "stages": [
+      { "img": "images/items/health_0.png" },
+      { "img": "images/items/health_1.png" },
+      { "img": "images/items/health_2.png" },
+      { "img": "images/items/health_3.png" },
+      { "img": "images/items/health_4.png" }
+    ]
+  }
+]
