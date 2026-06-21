@@ -1,119 +1,175 @@
 # Game Analysis: Pipistrello and the Cursed Yoyo
 
-> Fill this document as you investigate the game with dnSpy, Unity Explorer and BepInEx.
-> Every PLACEHOLDER_ in shared/data/ should be replaced with real values found here.
-
 ## Build Info
 
-- Unity version: _TODO_
-- .NET version: _TODO_
-- Assembly: `Pipistrello_Data/Managed/Assembly-CSharp.dll`
+- Engine: Unity (IL2CPP) — NO es Mono
+- Ensamblado nativo: `GameAssembly.dll`
+- Interop generado por Cpp2IL: `BepInEx/interop/Assembly-CSharp.dll`
+- Namespace principal: `Pipistrello`
 
 ---
 
-## Key Classes
+## Clases clave
 
-### GameManager
-- Namespace: _TODO_
-- Singleton pattern: `GameManager.Instance`
-- Relevant methods:
-  - `GiveItem(?)` — _TODO: exact signature_
-  - `HasItem(?)` — _TODO_
+### `Pipistrello.Game`
 
-### SaveManager / SaveData
-- Class name: _TODO_
-- Serialization method: _TODO_ (JSON / BinaryFormatter / PlayerPrefs / other)
-- Save file location: _TODO_
-- Relevant methods:
-  - Set flag: _TODO_
-  - Get flag: _TODO_
+Clase de estado global del juego. Métodos relevantes:
 
-### ItemManager / InventorySystem
-- Class name: _TODO_
-- How items are stored: _TODO_
-- Internal item identifier type: string / int / enum → _TODO_
-
-### ChestController (or equivalent)
-- Class name: _TODO_
-- Interaction method: _TODO_
-- Hook point (method + approx line): _TODO_
-- Event/delegate fired on open: _TODO_
-
-### BossController (or equivalent)
-- Class name: _TODO_
-- Defeat method/event: _TODO_
-- Hook point: _TODO_
-
----
-
-## Item System
-
-### How items are identified internally
-_TODO: string name / int ID / ScriptableObject / other_
-
-### Example: giving the yoyo to the player
 ```csharp
-// TODO: paste real code here
+// Establece un flag de progresión
+Game.SetFlag(Il2CppSystem.Collections.Generic.Dictionary<string,int> flags, string flagName, ...)
+
+// Estado de equips
+Game.SetEquipAcquired(Game.Equip equip, bool acquired, bool notify) → bool
+Game.SetUpgradeAcquired(Game.Upgrade upgrade, bool acquired) → bool
+Game.SetPetalContainerAcquired(string id, int petalNum, bool acquired) → bool
+Game.SetBpContainerAcquired(string id, ...) → bool
 ```
 
-### Example: checking if player has an item
+> El primer parámetro de `SetFlag` es `Il2CppSystem.Collections.Generic.Dictionary<string,int>`, no `string`. En Harmony se referencia como `__0` (Il2CppDict) y `__1` (string flagName).
+
+### `Pipistrello.Scripting.ExternalFunctions`
+
+Scripting del juego. Método relevante:
+
 ```csharp
-// TODO: paste real code here
+ExternalFunctions.BossEnd()  // Se llama al terminar un boss fight
 ```
 
 ---
 
-## Save / Flag System
+## Sistema de flags
 
-### How progression flags are stored
-_TODO_
+Toda la progresión del juego se gestiona mediante `Game.SetFlag`. Al morir/respawnear, el juego replaya **todos** los flags persistentes para restaurar el estado — esto significa que el mismo flag puede aparecer múltiples veces en el log. El mod debe deduplicar.
 
-### Example: reading a flag
-```csharp
-// TODO
+### Vocabulario completo de flags
+
+#### Equips (items de equipamiento)
+```
+g:equip:<nombre>:acquired    → primera vez que se recoge (AP: location check)
+g:equip:<nombre>:equipped    → equipado en un slot (ignorar)
+g:equip:<nombre>:refined     → refinado/mejorado (ignorar)
+```
+Ejemplos vistos: `seeEnemyLife`, `projectileReflect`
+
+#### Upgrades
+```
+g:upgrade:<nombre>:acquired  → recogido (AP: location check)
+```
+Ejemplos vistos: `bpUp`
+
+#### Petal containers (ampliaciones de vida)
+```
+g:petalContainer:<ruta>:acquired  → recogido (AP: location check)
+```
+La `<ruta>` incluye el path de sala, ej: `city_interiors/ren24/ren66`
+
+#### Key items (baterías)
+```
+g:tunnels:gotBattery1
+g:tunnels:gotBattery2
 ```
 
-### Example: setting a flag
-```csharp
-// TODO
+#### Habilidades del jugador
+```
+g:ability:<nombre>   → concede la habilidad al jugador (AP: estos son los AP items)
+```
+
+Lista completa descubierta (sala `policedep/lor124` — tutorial de habilidades):
+
+| Flag | Tipo |
+|---|---|
+| `g:ability:menu` | base (siempre activa) |
+| `g:ability:move` | base |
+| `g:ability:receiveDamage` | base |
+| `g:ability:jump` | base |
+| `g:ability:attack` | base |
+| `g:ability:throw` | movimiento/combate |
+| `g:ability:wallDash` | movimiento |
+| `g:ability:walkTheDog` | movimiento |
+| `g:ability:wallRailing` | movimiento |
+| `g:ability:helix` | movimiento |
+| `g:ability:chargedAction` | slot cargado |
+| `g:ability:chargedSleeper` | charged move |
+| `g:ability:chargedFlurry` | charged move |
+| `g:ability:chargedSpread` | charged move |
+| `g:ability:chargedSpin` | charged move |
+| `g:ability:specialAction` | slot especial |
+| `g:ability:specialParry` | special move |
+| `g:ability:specialSpin` | special move |
+| `g:ability:specialCoinFlip` | special move |
+
+Las habilidades `menu`, `move`, `receiveDamage`, `jump`, `attack` parecen ser base y se conceden desde el inicio. Las demás son progresión.
+
+#### Área/boss completado
+```
+g:<area>Complete     → AP: location check de boss/área
+```
+Ejemplos: `g:policedepComplete`, `g:prologue`
+
+#### Slots equipados (loadout actual)
+```
+g:equipped:chargedAction   → qué está en el slot de cargado
+g:equipped:specialAction   → qué está en el slot especial
+```
+
+#### Progresión de área
+```
+g:<area>Reached     → llegada a área (ej. g:policedepReached)
+g:<area>Sighted     → área vista
+```
+
+#### Flags de sala y navegación (ignorar)
+```
+g:visited:<sala>         → sala visitada
+g:passed:<desde>/<hasta> → transición completada
+```
+
+#### Estadísticas (ignorar)
+```
+g:stat:*
+```
+
+#### Flags temporales (ignorar siempre)
+```
+t:battle    → en combate activo
+t:sighted   → enemigo a la vista
 ```
 
 ---
 
-## Identified Locations
+## Áreas conocidas
 
-> Replace PLACEHOLDER_ values in shared/data/locations.json with these.
+| Área | Flag de completion | Notas |
+|---|---|---|
+| Policía (police dep) | `g:policedepComplete` | Primer dungeon. Flag de boss tras limpiar la sala de waves. |
+| Prólogo | `g:prologue` | Tutorial inicial |
 
-| AP Name | Scene | Object Path | Flag Key |
-|---------|-------|-------------|----------|
-| Starting Area - Tutorial Chest | _TODO_ | _TODO_ | _TODO_ |
-| Cursed Forest - Chest 1 | _TODO_ | _TODO_ | _TODO_ |
-| Cursed Forest - Boss Reward | _TODO_ | _TODO_ | _TODO_ |
-
----
-
-## Identified Items
-
-> Replace PLACEHOLDER_ values in shared/data/items.json with these.
-
-| AP Name | mod_internal_name | How to give |
-|---------|-------------------|-------------|
-| Yoyo | _TODO_ | _TODO_ |
-| Double Jump | _TODO_ | _TODO_ |
-| Dash | _TODO_ | _TODO_ |
+Salas identificadas:
+- `policedep/lor124` — sala de tutorial de habilidades (se activan todas en esta sala)
+- `policedep/lor288` — sala de premio del boss (`g:policedep/lor288:prize`)
+- `city_interiors/ren24/ren66` — sala con petal container
+- `city_interiors/ren925/yug711` — sala con petal container
 
 ---
 
-## Scene List
+## Items por recoger (locations)
 
-| Scene Name | Purpose |
-|------------|---------|
-| _TODO_ | Starting area |
-| _TODO_ | Town hub |
-| _TODO_ | Cursed Forest |
+Método de detección: hookear `Game.SetFlag` y filtrar por patrón.
+
+Los métodos `Set*Acquired` (`SetEquipAcquired`, `SetUpgradeAcquired`, etc.) **no parecen dispararse** al recoger items — el juego parece ir directamente a `SetFlag`. El hook de `SetFlag` con filtro por patrón es el método fiable.
 
 ---
 
-## Notes & Observations
+## Items por dar (recibidos desde AP)
 
-_Add anything relevant found during investigation here._
+Para dar una habilidad al jugador desde el mod: llamar `Game.SetFlag` con el flag correspondiente `g:ability:<nombre>`.
+
+Para dar un equip: explorar si `SetEquipAcquired(equip, acquired: true, notify: true)` es el camino correcto, o si basta con `SetFlag("g:equip:<nombre>:acquired")`.
+
+---
+
+## Notas de reverse engineering
+
+- El juego usa IL2CPP — no se puede usar dnSpy directamente sobre `GameAssembly.dll`. Opciones: Cpp2IL, Il2CppDumper, o inspeccionar los ensamblados de interop generados por BepInEx en `BepInEx/interop/`.
+- Los interop assemblies en `BepInEx/interop/` son los que se referencian en el `.csproj` del mod y los que se pueden abrir con ILSpy/dnSpy para explorar la API.
