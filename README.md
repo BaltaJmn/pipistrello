@@ -137,8 +137,9 @@ Durante el juego, los logs AP-relevantes tienen prefijo `[AP]`:
 ```
 mod/PipistrelloAP/
 ├── Plugin.cs                    # Punto de entrada BepInEx, registra HarmonyX
+├── LocationManager.cs           # Tabla flag→AP ID, deduplicación de replays, envío de checks
 ├── Hooks/
-│   ├── FlagHooks.cs             # Patch de Game.SetFlag — detecta location checks
+│   ├── FlagHooks.cs             # Patch de Game.SetFlag — enruta al LocationManager
 │   ├── ItemHooks.cs             # Patches de Set*Acquired — para dar items al jugador
 │   └── BossHooks.cs             # Patch de ExternalFunctions.BossEnd — detecta bosses
 └── PipistrelloAP.csproj
@@ -198,22 +199,13 @@ Si el CI falla, lo más probable es un PLACEHOLDER que no pasó validación o un
 
 ---
 
-## Estado actual y tareas pendientes
+## Estado actual
 
-### Hecho
-- [x] Scaffold del repo (monorepo, CI, schemas)
-- [x] BepInEx IL2CPP mod con HarmonyX funcionando
-- [x] Hook de `Game.SetFlag` — descubrimiento completo del vocabulario de flags
-- [x] Hooks de `Set*Acquired` y `BossEnd`
-- [x] Vocabulario de flags completo mapeado (equips, upgrades, petal containers, abilities, baterías, área complete)
+**Fase 1 completada.** El mod hookea el juego, detecta todos los eventos relevantes para AP y tiene la tabla de locations conocidas con deduplicación de replays.
 
-### En progreso / Próximos pasos
-- [ ] `LocationManager` en el mod — mapear flag → AP location ID, deduplicar replays
-- [ ] Completar `shared/data/` reemplazando PLACEHOLDERs con flags reales del juego
-- [ ] Completar el APWorld (`items.py`, `locations.py`, `regions.py`) con datos reales
-- [ ] Conexión WebSocket al servidor Archipelago desde el mod
-- [ ] Lógica de accesibilidad en `world/pipistrello/rules.py`
-- [ ] Pack PopTracker con autotracking
+**Siguiente:** Fase 2 — conexión WebSocket al servidor Archipelago.
+
+Ver el roadmap completo en [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
