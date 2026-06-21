@@ -7,8 +7,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <!-- Don't copy framework DLLs into output — BepInEx provides them -->
-    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <!-- Required so NuGet dependency DLLs (Archipelago.MultiClient.Net + websocket-sharp)
+         are written to the output folder and picked up by the copy target below.
+         BepInEx/game assemblies are excluded via <Private>false</Private> on each Reference. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <!-- Path to BepInEx and game assemblies — adjust GAME_DIR if needed -->
@@ -18,7 +20,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- BepInEx core -->
+    <!-- Archipelago multiworld client — brings websocket-sharp as a transitive dep -->
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
+    <!-- Analyzers only — no runtime DLL needed -->
+    <PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="1.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- BepInEx core — Private=false keeps these out of the output folder -->
     <Reference Include="BepInEx.Core">
       <HintPath>$(BepInExDir)\core\BepInEx.Core.dll</HintPath>
       <Private>false</Private>
@@ -52,12 +64,22 @@
       <HintPath>$(BepInExDir)\interop\Il2Cppmscorlib.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- Newtonsoft.Json is already bundled by BepInEx — exclude ours to avoid version conflicts -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(BepInExDir)\core\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
-  <!-- Auto-copy output DLL into BepInEx/plugins after build -->
+  <!-- Copy all output DLLs (our assembly + NuGet deps) into the plugins folder.
+       BepInEx/game reference DLLs are excluded because Private=false keeps them out of $(OutputPath). -->
   <Target Name="CopyToPlugins" AfterTargets="Build">
-    <Message Text="Copying $(AssemblyName).dll to BepInEx/plugins..." Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll"
+    <ItemGroup>
+      <!-- Exclude Newtonsoft.Json — BepInEx ships its own copy in core/ and loading two causes conflicts -->
+      <PluginFiles Include="$(OutputPath)*.dll" Exclude="$(OutputPath)Newtonsoft.Json.dll" />
+    </ItemGroup>
+    <Message Text="Copying plugin files to BepInEx/plugins/$(AssemblyName)..." Importance="high" />
+    <Copy SourceFiles="@(PluginFiles)"
           DestinationFolder="$(BepInExDir)\plugins\$(AssemblyName)"
           SkipUnchangedFiles="false" />
   </Target>

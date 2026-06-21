@@ -1,3 +1,5 @@
+using PipistrelloAP.Archipelago;
+
 namespace PipistrelloAP;
 
 public static class LocationManager
@@ -40,8 +42,11 @@ public static class LocationManager
 
         if (!Sent.Add(flag)) return; // already sent this session
 
+        // Track for reconnect resync (server deduplicates on its side)
+        ArchipelagoClient.ServerData.CheckedLocations.Add(locationId);
+
         Plugin.Log.LogInfo($"[AP] CHECK: {flag} → {locationId}");
-        // TODO Phase 2: ArchipelagoClient.SendLocationCheck(locationId);
+        ArchipelagoClient.SendLocationCheck(locationId);
     }
 
     // Returns true for flag patterns that represent collectible locations.
