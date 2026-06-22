@@ -1,9 +1,7 @@
 import json
+import pkgutil
 from dataclasses import dataclass
-from pathlib import Path
 from BaseClasses import ItemClassification, Item
-
-_SHARED_DATA = Path(__file__).parent.parent.parent / "shared" / "data" / "items.json"
 
 _CLASSIFICATION_MAP = {
     "progression": ItemClassification.progression,
@@ -22,8 +20,7 @@ class ItemData:
 
 
 def _load_items() -> dict[str, ItemData]:
-    with open(_SHARED_DATA, encoding="utf-8") as f:
-        raw = json.load(f)
+    raw = json.loads(pkgutil.get_data(__package__, "_data/items.json").decode("utf-8"))
     return {
         item["name"]: ItemData(
             id=item["id"],

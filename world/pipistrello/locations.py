@@ -1,9 +1,7 @@
 import json
+import pkgutil
 from dataclasses import dataclass, field
-from pathlib import Path
 from BaseClasses import Location
-
-_SHARED_DATA = Path(__file__).parent.parent.parent / "shared" / "data" / "locations.json"
 
 
 @dataclass
@@ -14,8 +12,7 @@ class LocationData:
 
 
 def _load_locations() -> dict[str, LocationData]:
-    with open(_SHARED_DATA, encoding="utf-8") as f:
-        raw = json.load(f)
+    raw = json.loads(pkgutil.get_data(__package__, "_data/locations.json").decode("utf-8"))
     return {
         loc["name"]: LocationData(
             id=loc["id"],

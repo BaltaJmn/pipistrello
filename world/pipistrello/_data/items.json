@@ -1,0 +1,65 @@
+{
+  "$schema": "../../shared/schemas/item.schema.json",
+  "items": [
+    {
+      "id": 7370000,
+      "name": "Throw",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Throw the yoyo as a projectile.",
+      "mod_internal_name": "g:ability:throw",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370001,
+      "name": "Wall Dash",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Dash off walls to reach new areas.",
+      "mod_internal_name": "g:ability:wallDash",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370002,
+      "name": "Walk The Dog",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Roll the yoyo along the ground.",
+      "mod_internal_name": "g:ability:walkTheDog",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370003,
+      "name": "Wall Railing",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Slide along walls.",
+      "mod_internal_name": "g:ability:wallRailing",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370004,
+      "name": "Helix",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Spiral attack that covers wide area.",
+      "mod_internal_name": "g:ability:helix",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370100,
+      "name": "Gold Coin",
+      "classification": "filler",
+      "category": "currency",
+      "count": 2,
+      "description": "A handful of gold coins.",
+      "mod_internal_name": "",
+      "tags": ["filler"]
+    }
+  ]
+}

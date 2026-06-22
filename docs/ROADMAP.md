@@ -5,8 +5,8 @@
 | Fase | Nombre | Estado |
 |------|--------|--------|
 | 1 | Investigación + scaffold | ✅ Completada |
-| 2 | Conexión real a Archipelago | 🔄 Siguiente |
-| 3 | Catálogo completo | ⏳ Pendiente |
+| 2 | Conexión real a Archipelago | ✅ Completada |
+| 3 | Catálogo completo | 🔄 Siguiente |
 | 4 | APWorld completo | ⏳ Pendiente |
 | 5 | PopTracker | ⏳ Pendiente |
 | 6 | Lógica completa + mod final | ⏳ Pendiente |
@@ -50,32 +50,31 @@
 
 ---
 
-## Fase 2 — Conexión real a Archipelago 🔄
+## Fase 2 — Conexión real a Archipelago ✅
 
 **Objetivo:** recoger un ítem en el juego → el check aparece en el servidor AP.
 
-**Prerrequisitos:** Fase 1 completada ✅
+**Completado:**
 
-**Tareas:**
+- `ArchipelagoClient.cs` — cliente WebSocket con `Archipelago.MultiClient.Net 6.6.0`:
+  - Conecta a `ws://<host>:<port>` con nombre de juego y slot configurable desde `BepInEx/config/PipistrelloAP.cfg`
+  - Envía `LocationCheck` al recoger cualquier flag catalogado en `LocationManager`
+  - Recibe `ReceivedItems` de AP con deduplicación por índice (`ServerData.Index`)
+  - Cola offline: los checks se acumulan mientras no hay conexión y se reenvían al conectar
+- `ArchipelagoData.cs` — estado de sesión (URI, slot, seed, historial de checks)
+- APWorld actualizado para generar seeds válidas:
+  - Usa `pkgutil.get_data()` para leer `_data/*.json` desde el ZIP (funciona con zipimport)
+  - Se distribuye como `pipistrello.apworld` (ZIP) — no como carpeta (incompatible con el exe frozen)
+  - `tools/build_apworld.ps1` automatiza el build y la instalación
+  - Corregido: `item_name_to_id` / `location_name_to_id` excluyen eventos (`id=None`)
+  - Corregido: padding de items usa solo locations fillables (excluye Victory event)
+- Pipeline completo probado: juego → mod → WebSocket → servidor AP → check registrado
 
-1. **APWorld stub funcional** — actualizar `world/pipistrello/` para que genere una seed válida con las 7 locations conocidas y las abilities como ítems. Sin esto no se puede levantar un servidor local para probar.
-
-2. **`ArchipelagoClient.cs` en el mod** — cliente WebSocket que:
-   - Se conecta a `ws://localhost:38281` (puerto por defecto de AP)
-   - Envía `Connect` con nombre de juego y slot del jugador
-   - Recibe `Connected` y guarda el slot number
-   - Expone `SendLocationCheck(long id)` para que lo llame `LocationManager`
-   - Recibe ítems mandados por AP (`ReceivedItems`) para dárselos al jugador
-
-3. **Enchufar `LocationManager` al cliente** — sustituir el `TODO Phase 2` en `LocationManager.cs` por `ArchipelagoClient.SendLocationCheck(locationId)`
-
-4. **Prueba de circuito completo** — levantar servidor AP local, generar seed, conectar el mod, recoger algo en el juego y verificar que el check llega al servidor
-
-**Milestone:** recoger un ítem en el juego → aparece en la UI de Archipelago.
+**Milestone alcanzado:** recoger un ítem en el juego → aparece en la UI de Archipelago.
 
 ---
 
-## Fase 3 — Catálogo completo
+## Fase 3 — Catálogo completo 🔄
 
 **Objetivo:** `shared/data/` completo, sin PLACEHOLDERs.
 
@@ -86,6 +85,7 @@
 - Llenar `shared/data/locations.json` con todas las locations (flags `g:*:acquired`, `g:*Complete`)
 - Llenar `shared/data/regions.json` con la estructura real de áreas del juego
 - Actualizar `LocationManager.cs` con todas las entradas
+- Implementar `ItemManager.cs` — dar abilities al jugador al recibirlas de AP (escribir flag `g:ability:*`)
 - El log `[AP] UNCATALOGUED:` es la señal de que hay un flag nuevo sin catalogar
 
 ---

@@ -1,0 +1,29 @@
+{
+  "regions": [
+    {
+      "id": "menu",
+      "name": "Menu",
+      "connects_to": [
+        { "target": "police_dep", "rules": [] }
+      ]
+    },
+    {
+      "id": "police_dep",
+      "name": "Police Department",
+      "connects_to": [
+        { "target": "city_interiors", "rules": [] },
+        { "target": "tunnels",        "rules": [] }
+      ]
+    },
+    {
+      "id": "city_interiors",
+      "name": "City Interiors",
+      "connects_to": []
+    },
+    {
+      "id": "tunnels",
+      "name": "Tunnels",
+      "connects_to": []
+    }
+  ]
+}

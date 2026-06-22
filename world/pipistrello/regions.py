@@ -1,17 +1,14 @@
 import json
-from pathlib import Path
+import pkgutil
 from BaseClasses import Region
 from .locations import LOCATION_TABLE, PipistrelloLocation
-
-_SHARED_DATA = Path(__file__).parent.parent.parent / "shared" / "data" / "regions.json"
 
 
 def create_regions(world) -> None:
     player = world.player
     multiworld = world.multiworld
 
-    with open(_SHARED_DATA, encoding="utf-8") as f:
-        raw = json.load(f)
+    raw = json.loads(pkgutil.get_data(__package__, "_data/regions.json").decode("utf-8"))
 
     region_map: dict[str, Region] = {}
 
@@ -20,9 +17,14 @@ def create_regions(world) -> None:
         region = Region(r["name"], player, multiworld)
         region_map[r["id"]] = region
 
-    # Add Menu if not in data (required by AP)
+    # AP requires a "Menu" region as the starting point
     if "menu" not in region_map:
-        region_map["menu"] = Region("Menu", player, multiworld)
+        menu = Region("Menu", player, multiworld)
+        region_map["menu"] = menu
+        # Connect to first non-menu region if menu has no connections in data
+        first = next((r for r in raw["regions"] if r["id"] != "menu"), None)
+        if first:
+            menu.connect(region_map[first["id"]])
 
     # Place locations into their regions
     for loc_name, loc_data in LOCATION_TABLE.items():
@@ -33,16 +35,13 @@ def create_regions(world) -> None:
         location = PipistrelloLocation(player, loc_name, loc_data.id, region)
         region.locations.append(location)
 
-    # Wire up connections (rules applied later in rules.py)
+    # Wire up connections between regions (access rules applied later in rules.py)
     for r in raw["regions"]:
         source = region_map[r["id"]]
         for conn in r.get("connects_to", []):
-            target = region_map[conn["target"]]
-            source.connect(target)
-
-    # Connect Menu to starting_area if not already wired
-    menu = region_map["menu"]
-    if not any(e.connected_region == region_map.get("starting_area") for e in menu.exits):
-        menu.connect(region_map["starting_area"])
+            target_id = conn["target"]
+            if target_id not in region_map:
+                raise ValueError(f"Region '{r['id']}' connects to unknown region '{target_id}'")
+            source.connect(region_map[target_id])
 
     multiworld.regions += list(region_map.values())
