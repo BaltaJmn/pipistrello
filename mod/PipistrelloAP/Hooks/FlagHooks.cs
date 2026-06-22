@@ -16,7 +16,7 @@ public static class SetFlagPatch
         LocationManager.OnFlagSet(flag);
 
         // Abilities are AP items (received from AP, not sent as checks) — log separately
-        // TODO Phase 2: route to ItemManager.OnAbilityGranted(flag) instead
+        // TODO Phase 3: route to ItemManager.OnAbilityGranted(flag) instead
         if (flag.StartsWith("g:ability:"))
             Plugin.Log.LogInfo($"[AP] ABILITY: {flag}");
     }

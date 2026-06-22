@@ -136,7 +136,7 @@ public static class ArchipelagoClient
             ServerData.Index++;
 
             Plugin.Log.LogInfo($"[AP] Item received: {item.ItemName} (id {item.ItemId})");
-            // TODO Phase 3: ItemManager.GrantItem(item.Item);
+            // TODO Phase 3: ItemManager.GrantItem(item.ItemId);
         }
     }
 
