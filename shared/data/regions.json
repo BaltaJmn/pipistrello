@@ -4,32 +4,25 @@
       "id": "menu",
       "name": "Menu",
       "connects_to": [
-        { "target": "starting_area", "rules": [] }
+        { "target": "police_dep", "rules": [] }
       ]
     },
     {
-      "id": "starting_area",
-      "name": "Starting Area",
+      "id": "police_dep",
+      "name": "Police Department",
       "connects_to": [
-        { "target": "cursed_forest", "rules": ["has_yoyo"] },
-        { "target": "town",          "rules": [] }
+        { "target": "city_interiors", "rules": [] },
+        { "target": "tunnels",        "rules": [] }
       ]
     },
     {
-      "id": "town",
-      "name": "Town",
+      "id": "city_interiors",
+      "name": "City Interiors",
       "connects_to": []
     },
     {
-      "id": "cursed_forest",
-      "name": "Cursed Forest",
-      "connects_to": [
-        { "target": "deep_forest", "rules": ["has_double_jump"] }
-      ]
-    },
-    {
-      "id": "deep_forest",
-      "name": "Deep Forest",
+      "id": "tunnels",
+      "name": "Tunnels",
       "connects_to": []
     }
   ]

@@ -28,8 +28,8 @@ def _load_locations() -> dict[str, LocationData]:
 
 LOCATION_TABLE: dict[str, LocationData] = _load_locations()
 
-# Victory — internal event location
-LOCATION_TABLE["Victory"] = LocationData(id=None, region="deep_forest")
+# Victory — internal event location, placed in police_dep (Phase 2 stub; update region in Phase 4)
+LOCATION_TABLE["Victory"] = LocationData(id=None, region="police_dep")
 
 
 class PipistrelloLocation(Location):

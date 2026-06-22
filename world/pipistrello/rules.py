@@ -5,35 +5,31 @@ def has(state: CollectionState, player: int, item: str) -> bool:
     return state.has(item, player)
 
 
-def can_fight(state: CollectionState, player: int) -> bool:
-    return has(state, player, "Yoyo")
+# ── Access helpers (Phase 4: fill these in with real logic) ─────────────────
+
+def can_wall_traverse(state: CollectionState, player: int) -> bool:
+    return has(state, player, "Wall Dash") or has(state, player, "Wall Railing")
 
 
 def can_reach_high(state: CollectionState, player: int) -> bool:
-    return has(state, player, "Double Jump")
+    return has(state, player, "Helix")
 
 
-def can_cross_gaps(state: CollectionState, player: int) -> bool:
-    return has(state, player, "Dash")
-
+# ── Rule wiring ─────────────────────────────────────────────────────────────
 
 def set_rules(world) -> None:
     player = world.player
     multiworld = world.multiworld
 
-    # Region connection rules
-    for entrance in multiworld.get_region("Starting Area", player).exits:
-        if entrance.connected_region.name == "Cursed Forest":
-            entrance.access_rule = lambda state: can_fight(state, player)
+    # Phase 2 stub: no location or region rules — everything accessible from start.
+    # Real access logic goes here in Phase 4 once the full map is catalogued.
 
-    for entrance in multiworld.get_region("Cursed Forest", player).exits:
-        if entrance.connected_region.name == "Deep Forest":
-            entrance.access_rule = lambda state: can_reach_high(state, player)
-
-    # Location-specific rules
-    forest_boss = multiworld.get_location("Cursed Forest - Boss Reward", player)
-    forest_boss.access_rule = lambda state: can_fight(state, player)
-
-    # Completion condition
-    multiworld.completion_condition[player] = \
-        lambda state: state.has("Victory", player)
+    # Completion condition: have all 5 progression abilities
+    # (Phase 4: replace with actual final boss condition)
+    multiworld.completion_condition[player] = lambda state: (
+        has(state, player, "Throw") and
+        has(state, player, "Wall Dash") and
+        has(state, player, "Walk The Dog") and
+        has(state, player, "Wall Railing") and
+        has(state, player, "Helix")
+    )

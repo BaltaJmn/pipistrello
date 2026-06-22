@@ -3,69 +3,63 @@
   "items": [
     {
       "id": 7370000,
-      "name": "Yoyo",
+      "name": "Throw",
       "classification": "progression",
-      "category": "weapon",
+      "category": "ability",
       "count": 1,
-      "description": "The cursed yoyo. Primary weapon and tool.",
-      "tracker_image": "images/items/yoyo.png",
-      "mod_internal_name": "PLACEHOLDER_Yoyo",
-      "tags": ["weapon", "main"]
+      "description": "Throw the yoyo as a projectile.",
+      "mod_internal_name": "g:ability:throw",
+      "tags": ["ability", "movement"]
     },
     {
       "id": 7370001,
-      "name": "Double Jump",
+      "name": "Wall Dash",
       "classification": "progression",
-      "category": "movement",
+      "category": "ability",
       "count": 1,
-      "description": "Allows a second jump in mid-air.",
-      "tracker_image": "images/items/double_jump.png",
-      "mod_internal_name": "PLACEHOLDER_DoubleJump",
-      "tags": ["movement", "ability"]
+      "description": "Dash off walls to reach new areas.",
+      "mod_internal_name": "g:ability:wallDash",
+      "tags": ["ability", "movement"]
     },
     {
       "id": 7370002,
-      "name": "Dash",
+      "name": "Walk The Dog",
       "classification": "progression",
-      "category": "movement",
+      "category": "ability",
       "count": 1,
-      "description": "Quick horizontal dash through obstacles.",
-      "tracker_image": "images/items/dash.png",
-      "mod_internal_name": "PLACEHOLDER_Dash",
-      "tags": ["movement", "ability"]
+      "description": "Roll the yoyo along the ground.",
+      "mod_internal_name": "g:ability:walkTheDog",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370003,
+      "name": "Wall Railing",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Slide along walls.",
+      "mod_internal_name": "g:ability:wallRailing",
+      "tags": ["ability", "movement"]
+    },
+    {
+      "id": 7370004,
+      "name": "Helix",
+      "classification": "progression",
+      "category": "ability",
+      "count": 1,
+      "description": "Spiral attack that covers wide area.",
+      "mod_internal_name": "g:ability:helix",
+      "tags": ["ability", "movement"]
     },
     {
       "id": 7370100,
-      "name": "Health Upgrade",
-      "classification": "useful",
-      "category": "upgrade",
-      "count": 4,
-      "description": "Increases maximum health by one.",
-      "tracker_image": "images/items/health_upgrade.png",
-      "mod_internal_name": "PLACEHOLDER_HealthUpgrade",
-      "tags": ["upgrade", "health"]
-    },
-    {
-      "id": 7370300,
       "name": "Gold Coin",
       "classification": "filler",
       "category": "currency",
-      "count": 20,
+      "count": 2,
       "description": "A handful of gold coins.",
-      "tracker_image": "images/items/coin.png",
-      "mod_internal_name": "PLACEHOLDER_Coin",
-      "tags": ["currency", "filler"]
-    },
-    {
-      "id": 7370500,
-      "name": "Bat Trap",
-      "classification": "trap",
-      "category": "trap",
-      "count": 5,
-      "description": "Releases a swarm of bats.",
-      "tracker_image": "images/items/bat_trap.png",
-      "mod_internal_name": "PLACEHOLDER_BatTrap",
-      "tags": ["trap"]
+      "mod_internal_name": "",
+      "tags": ["filler"]
     }
   ]
 }
